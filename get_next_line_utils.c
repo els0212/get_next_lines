@@ -41,3 +41,24 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 		dst[st] = '\0';
 	return (ft_strlen(src));
 }
+
+int	ft_resize_and_copy(char **line, char *buf, int mul, int flag)
+{
+	char	*temp;
+	int		mem_size;
+	int		cpy_size;
+
+	mem_size = flag == -1 ? BUFFER_SIZE * mul :
+		BUFFER_SIZE * (mul - 1) + flag + 1;
+	cpy_size = flag == -1 ? BUFFER_SIZE + 1 : flag + 1;
+	ft_memset(&temp, mem_size);
+	if (mul > 1)
+	{
+		ft_strlcpy(temp, *line, BUFFER_SIZE * (mul - 1) + 1);
+		free(*line);
+	}
+	ft_strlcpy(temp + BUFFER_SIZE * (mul - 1), buf, cpy_size);
+	*line = temp;
+	return (mul);
+}
+

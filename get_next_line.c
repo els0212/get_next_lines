@@ -1,62 +1,44 @@
 #include "get_next_line.h"
 
+int	ft_while_loop(char **line, char *buf, int *st, int *mul)
+{
+	if (*st == BUFFER_SIZE - 1)
+	{
+		*mul = ft_resize_and_copy(line, buf, *mul, -1);
+		if (!buf[*st] || buf[*st] == '\n')
+		{
+			*(*line + BUFFER_SIZE * (*mul) - 1) = '\0';
+			return (1);
+		}
+		*st = -1;
+		ft_init(buf, BUFFER_SIZE);
+		(*mul)++;
+	}
+	else if (!buf[*st] || buf[*st] == '\n')
+	{
+		ft_resize_and_copy(line, buf, *mul, *st);
+		return (1);
+	}
+	(*st)++;
+	return (0);
+}
+
 int	get_next_line(int fd, char **line)
 {
-	int			st;
-	ssize_t		rd;
-	char		*temp;
 	static char	*buf_ref;
+	char		*buf;
+	int			st;
 	int			mul;
-	char		temp_char;
-#if BUFFER_SIZE > 0
-	char		buf[BUFFER_SIZE];
-#else
-	char		buf[1];
-#endif
+	ssize_t		rd;
 
 	if (BUFFER_SIZE <= 0)
 		return (-1);
+	*line = 0;
 	st = 0;
 	mul = 1;
-	ft_init((char *)buf, BUFFER_SIZE);
-	*line = 0;
+	ft_memset(&buf, BUFFER_SIZE);
 	while ((rd = read(fd, &buf[st], 1)) >= 0)
-	{
-		temp_char = buf[st];
-		if (st == BUFFER_SIZE - 1)
-		{
-			ft_memset(&temp, BUFFER_SIZE * mul);
-			if (mul > 1)
-			{
-				ft_strlcpy(temp, *line, BUFFER_SIZE * (mul - 1) + 1);
-				free(*line);
-			}
-			ft_strlcpy(temp + BUFFER_SIZE * (mul - 1), buf, BUFFER_SIZE + 1);
-			*line = temp;
-			if (!temp_char || temp_char == '\n')
-			{
-				*(*line + BUFFER_SIZE * mul - 1) = '\0';
-				break ;
-			}
-			st = -1;
-			ft_init((char *)buf, BUFFER_SIZE);
-			mul++;
-		}
-		else if (!temp_char || temp_char == '\n')
-		{
-			ft_memset(&temp, BUFFER_SIZE * (mul - 1) + st + 1);
-			if (mul > 1)
-			{
-				ft_strlcpy(temp, *line, BUFFER_SIZE * (mul - 1) + 1);
-	 			free(*line);
-			}
-			ft_strlcpy(temp + BUFFER_SIZE * (mul - 1), buf, st + 1);
-			*line = temp;
+		if (ft_while_loop(line, buf, &st, &mul))
 			break ;
-		}
-		st++;
-	}
-	if(!(buf_ref = &buf[st]))
-		return (-1);
-	return ((int)rd);
+	return (!(buf_ref = &buf[st]) ? -1 : rd);
 }
