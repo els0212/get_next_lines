@@ -42,7 +42,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	return (ft_strlen(src));
 }
 
-int	ft_resize_and_copy(char **line, char *buf, int mul, int flag)
+int		ft_resize_and_copy(char **line, char *buf, int mul, int flag)
 {
 	char	*temp;
 	int		mem_size;
@@ -61,4 +61,3 @@ int	ft_resize_and_copy(char **line, char *buf, int mul, int flag)
 	*line = temp;
 	return (mul);
 }
-

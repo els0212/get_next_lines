@@ -1,10 +1,8 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# include <fcntl.h>
 # include <stdlib.h>
-#include <stddef.h>
-#include <unistd.h>
-#include <stdio.h>
+# include <unistd.h>
+
 int		ft_memset(char **line, size_t size);
 void	ft_init(char *line, size_t size);
 size_t	ft_strlen(const char *s);
