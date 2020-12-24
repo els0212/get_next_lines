@@ -6,7 +6,7 @@
 /*   By: hyi <hyi@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 00:28:14 by hyi               #+#    #+#             */
-/*   Updated: 2020/12/24 00:28:14 by hyi              ###   ########.fr       */
+/*   Updated: 2020/12/24 19:15:27 by hyi              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,6 @@ void	ft_init(char *line, size_t size)
 		*(line + st++) = 0;
 }
 
-size_t	ft_strlen(const char *s)
-{
-	int	st;
-
-	st = 0;
-	while (*(s + st))
-		st++;
-	return (st);
-}
-
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
 	size_t	st;
@@ -51,10 +41,10 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	}
 	if (dstsize > 0)
 		dst[st] = '\0';
-	return (ft_strlen(src));
+	return (0);
 }
 
-int		ft_resize_and_copy(char **line, char *buf, int mul, int flag)
+void	ft_resize_and_copy(char **line, char *buf, int mul, int flag)
 {
 	char	*temp;
 	int		mem_size;
@@ -71,5 +61,4 @@ int		ft_resize_and_copy(char **line, char *buf, int mul, int flag)
 	}
 	ft_strlcpy(temp + BUFFER_SIZE * (mul - 1), buf, cpy_size);
 	*line = temp;
-	return (mul);
 }

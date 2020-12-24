@@ -6,7 +6,7 @@
 /*   By: hyi <hyi@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 00:28:04 by hyi               #+#    #+#             */
-/*   Updated: 2020/12/24 00:28:05 by hyi              ###   ########.fr       */
+/*   Updated: 2020/12/24 20:36:28 by hyi              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	ft_while_loop(char **line, char *buf, int *st, int *mul)
 {
 	if (*st == BUFFER_SIZE - 1)
 	{
-		*mul = ft_resize_and_copy(line, buf, *mul, -1);
+		ft_resize_and_copy(line, buf, *mul, -1);
 		if (!buf[*st] || buf[*st] == '\n')
 		{
 			*(*line + BUFFER_SIZE * (*mul) - 1) = '\0';
@@ -43,7 +43,7 @@ int	get_next_line(int fd, char **line)
 	int			mul;
 	ssize_t		rd;
 
-	if (BUFFER_SIZE <= 0)
+	if (!line || BUFFER_SIZE <= 0)
 		return (-1);
 	*line = 0;
 	st = 0;
