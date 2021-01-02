@@ -6,7 +6,7 @@
 /*   By: hyi <hyi@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 00:28:14 by hyi               #+#    #+#             */
-/*   Updated: 2020/12/24 19:15:27 by hyi              ###   ########.fr       */
+/*   Updated: 2021/01/02 22:09:34 by hyi              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,28 @@
 
 int		ft_memset(char **line, size_t size)
 {
+	int	st;
+
 	if (!(*line = (char *)malloc(sizeof(char) * (size + 1))))
 		return (-1);
-	ft_init(*line, size);
+	st = 0;
+	while (st < size)
+		*(*line + st++) = '\0';
 	return (0);
 }
 
-void	ft_init(char *line, size_t size)
+int		ft_get_new_line_idx(char *buf)
 {
-	size_t	st;
+	int	st;
 
 	st = 0;
-	while (st < size)
-		*(line + st++) = 0;
+	while (buf[st])
+	{
+		if (buf[st] == '\n')
+			return (st);
+		st++;
+	}
+	return (-1);
 }
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
@@ -44,21 +53,36 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	return (0);
 }
 
-void	ft_resize_and_copy(char **line, char *buf, int mul, int flag)
+void	ft_resize_and_copy(char **line, char *buf, int st, int ed)
 {
 	char	*temp;
 	int		mem_size;
-	int		cpy_size;
 
-	mem_size = flag == -1 ? BUFFER_SIZE * mul :
-		BUFFER_SIZE * (mul - 1) + flag + 1;
-	cpy_size = flag == -1 ? BUFFER_SIZE + 1 : flag + 1;
+	mem_size = ft_get_len(*line) + ed - st + 1;
 	ft_memset(&temp, mem_size);
-	if (mul > 1)
+	if (*line)
 	{
-		ft_strlcpy(temp, *line, BUFFER_SIZE * (mul - 1) + 1);
+		ft_strlcpy(temp, *line, ft_get_len(*line) + 1);
 		free(*line);
 	}
-	ft_strlcpy(temp + BUFFER_SIZE * (mul - 1), buf, cpy_size);
+	ft_strlcpy(temp + ft_get_len(*line), buf, ed - st + 1);
+	//printf("temp = :%s:\n", temp);
 	*line = temp;
+}
+
+char	*ft_strdup(char *str)
+{
+	char	*ret;
+	int		st;
+
+	if (!(ret = (char *)malloc(sizeof(char) * (ft_get_len(str) + 1))))
+		return (0);
+	st = 0;
+	while (str[st])
+	{
+		ret[st] = str[st];
+		st++;
+	}
+	ret[st] = '\0';
+	return (ret);
 }
