@@ -6,7 +6,7 @@
 /*   By: hyi <hyi@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 00:28:24 by hyi               #+#    #+#             */
-/*   Updated: 2021/01/03 00:58:57 by hyi              ###   ########.fr       */
+/*   Updated: 2021/01/03 01:36:59 by hyi              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,24 +52,25 @@ int	get_next_line(int fd, char **line)
 	static char	*buf_ref;
 	char		*buf;
 	ssize_t		rd;
-
+	int			idx;
 	if (!line || BUFFER_SIZE <= 0)
 		return (-1);
 	*line = 0;
 	if (buf_ref)
 	{
+		idx = ft_get_new_line_idx(buf_ref);
 		//printf("buf_ref = :%s:\n", buf_ref);
-		if (ft_get_new_line_idx(buf_ref) >= 0 && ft_get_new_line_idx(buf_ref) < BUFFER_SIZE - 1)
+		if (idx >= 0 && idx + 1 < ft_get_len(buf_ref))
 		{
-			ft_resize_and_copy(line, buf_ref, 0, ft_get_new_line_idx(buf_ref));
-			buf_ref = &buf_ref[ft_get_new_line_idx(buf_ref)];
+			ft_resize_and_copy(line, buf_ref, 0, idx);
+			buf_ref = idx + 1 < ft_get_len(buf_ref) ? &buf_ref[idx + 1] : 0;
 			return (1);
 		}
 		else
 			ft_resize_and_copy(line, buf_ref, 0, ft_get_len(buf_ref));
 		buf_ref = 0;
 	}
-	ft_memset(&buf, BUFFER_SIZE1);
+	ft_memset(&buf, BUFFER_SIZE + 1);
 	while ((rd = read(fd, buf, BUFFER_SIZE)) > 0)
 	{
 		//printf("loop buf = :%s:\n", buf);
