@@ -6,7 +6,7 @@
 /*   By: hyi <hyi@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 00:28:14 by hyi               #+#    #+#             */
-/*   Updated: 2021/01/02 22:09:34 by hyi              ###   ########.fr       */
+/*   Updated: 2021/01/02 22:20:14 by hyi              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		ft_memset(char **line, size_t size)
 {
-	int	st;
+	size_t	st;
 
 	if (!(*line = (char *)malloc(sizeof(char) * (size + 1))))
 		return (-1);
@@ -64,9 +64,9 @@ void	ft_resize_and_copy(char **line, char *buf, int st, int ed)
 	{
 		ft_strlcpy(temp, *line, ft_get_len(*line) + 1);
 		free(*line);
+		*line = 0;
 	}
 	ft_strlcpy(temp + ft_get_len(*line), buf, ed - st + 1);
-	//printf("temp = :%s:\n", temp);
 	*line = temp;
 }
 
