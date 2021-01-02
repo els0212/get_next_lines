@@ -1,12 +1,12 @@
-ear* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hyi <hyi@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/24 00:28:04 by hyi               #+#    #+#             */
-/*   Updated: 2021/01/03 00:22:37 by hyi              ###   ########.fr       */
+/*   Created: 2021/01/03 00:28:24 by hyi               #+#    #+#             */
+/*   Updated: 2021/01/03 00:58:57 by hyi              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ int	ft_while_loop(char **line, char *buf, char **buf_ref)
 	else
 	{
 		ft_resize_and_copy(line, buf, 0, idx);
-		*buf_ref = idx < BUFFER_SIZE - 1 ? ft_strdup(&buf[idx + 1]) : 0;
+		*buf_ref = idx + 1 < BUFFER_SIZE ? ft_strdup(&buf[idx + 1]) : 0;
 
 		//printf("in while loop buf_ref = :%s:\n", *buf_ref);
 		return (1);
 	}
 	st = 0;
-	while (buf[st])
+	while (st < BUFFER_SIZE)
 		buf[st++] = '\0';
 	return (0);
 }
@@ -52,7 +52,6 @@ int	get_next_line(int fd, char **line)
 	static char	*buf_ref;
 	char		*buf;
 	ssize_t		rd;
-	int			idx;
 
 	if (!line || BUFFER_SIZE <= 0)
 		return (-1);
@@ -70,7 +69,7 @@ int	get_next_line(int fd, char **line)
 			ft_resize_and_copy(line, buf_ref, 0, ft_get_len(buf_ref));
 		buf_ref = 0;
 	}
-	ft_memset(&buf, BUFFER_SIZE);
+	ft_memset(&buf, BUFFER_SIZE1);
 	while ((rd = read(fd, buf, BUFFER_SIZE)) > 0)
 	{
 		//printf("loop buf = :%s:\n", buf);
