@@ -4,7 +4,7 @@
 int main(void)
 {
 	char *line;
-	int fd = open("test2",O_RDONLY);
+	int fd = open("test3",O_RDONLY);
 	while (get_next_line(fd, &line))
 		printf("line = %s", line);
 	return (0);
