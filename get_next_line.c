@@ -6,7 +6,7 @@
 /*   By: hyi <hyi@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 00:28:24 by hyi               #+#    #+#             */
-/*   Updated: 2021/01/03 16:30:00 by hyi              ###   ########.fr       */
+/*   Updated: 2021/01/03 17:02:00 by hyi              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	get_next_line(int fd, char **line)
 			break;
 	}
 	free(buf);
-	if (!line)
-		ft_memset(&line, 0);
+	if (!*line)
+		ft_memset(line, 1);
 	return (rd > 0 ? 1 : rd);
 }
