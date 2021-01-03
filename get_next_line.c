@@ -6,7 +6,7 @@
 /*   By: hyi <hyi@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 00:28:24 by hyi               #+#    #+#             */
-/*   Updated: 2021/01/03 17:02:00 by hyi              ###   ########.fr       */
+/*   Updated: 2021/01/03 17:16:01 by hyi              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,46 @@ int	ft_get_len(char *str)
 
 int	ft_while_loop(char **line, char *buf, char **buf_ref)
 {
-	int	idx;
-	int	st;
+	int		idx;
+	int		st;
+	char	*del;
 
 	idx = ft_get_new_line_idx(buf);
-	//printf("*line = :%s:, idx = %d\n", *line, idx);
 	if (idx < 0)
 		ft_resize_and_copy(line, buf, 0, BUFFER_SIZE);
 	else
 	{
 		ft_resize_and_copy(line, buf, 0, idx);
-		//printf("buf_ref_len = %d\n", ft_get_len(buf));
+		del = *buf_ref;
 		*buf_ref = (idx + 1 < ft_get_len(buf) && *(buf + idx + 1))
 			? ft_strdup(&buf[idx + 1]) : 0;
-		//printf("in while loop buf_ref = :%s:\n", *buf_ref);
+		free(del);
 		return (1);
 	}
 	st = 0;
 	while (st < BUFFER_SIZE)
 		buf[st++] = '\0';
+	return (0);
+}
+
+int	ft_proc_buf_ref(char **line, char **buf_ref)
+{
+	int		idx;
+	char	*del;
+
+	idx = ft_get_new_line_idx(*buf_ref);
+	if (idx >= 0)
+	{
+		ft_resize_and_copy(line, *buf_ref, 0, idx);
+		del = *buf_ref;
+		*buf_ref = (idx + 1 < ft_get_len(*buf_ref) && *(*buf_ref + idx + 1))
+			? ft_strdup(buf_ref[idx + 1]) : 0;
+		free(del);
+		return (1);
+	}
+	else
+		ft_resize_and_copy(line, *buf_ref, 0, ft_get_len(*buf_ref));
+	buf_ref = 0;
 	return (0);
 }
 
@@ -60,6 +81,7 @@ int	get_next_line(int fd, char **line)
 	*line = 0;
 	if (buf_ref)
 	{
+		/*
 		idx = ft_get_new_line_idx(buf_ref);
 		if (idx >= 0)
 		{
@@ -71,6 +93,9 @@ int	get_next_line(int fd, char **line)
 		else
 			ft_resize_and_copy(line, buf_ref, 0, ft_get_len(buf_ref));
 		buf_ref = 0;
+		*/
+		if (ft_proc_buf_ref(line, &buf_ref))
+			return (1);
 	}
 	ft_memset(&buf, BUFFER_SIZE + 1);
 	while ((rd = read(fd, buf, BUFFER_SIZE)) > 0)
