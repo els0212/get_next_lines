@@ -6,7 +6,7 @@
 /*   By: hyi <hyi@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/24 00:28:14 by hyi               #+#    #+#             */
-/*   Updated: 2021/01/02 22:20:14 by hyi              ###   ########.fr       */
+/*   Updated: 2021/01/03 15:28:29 by hyi              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,18 @@ void	ft_resize_and_copy(char **line, char *buf, int st, int ed)
 {
 	char	*temp;
 	int		mem_size;
+	int		line_len;
 
-	mem_size = ft_get_len(*line) + ed - st + 1;
+	line_len = ft_get_len(*line);
+	mem_size = line_len + ed - st + 1;
 	ft_memset(&temp, mem_size);
 	if (*line)
 	{
-		ft_strlcpy(temp, *line, ft_get_len(*line) + 1);
+		ft_strlcpy(temp, *line, line_len + 1);
 		free(*line);
 		*line = 0;
 	}
-	ft_strlcpy(temp + ft_get_len(*line), buf, ed - st + 1);
+	ft_strlcpy(temp + line_len, buf, ed - st + 1);
 	*line = temp;
 }
 

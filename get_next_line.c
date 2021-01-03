@@ -6,7 +6,7 @@
 /*   By: hyi <hyi@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 00:28:24 by hyi               #+#    #+#             */
-/*   Updated: 2021/01/03 15:12:20 by hyi              ###   ########.fr       */
+/*   Updated: 2021/01/03 15:56:57 by hyi              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	ft_while_loop(char **line, char *buf, char **buf_ref)
 	int	st;
 
 	idx = ft_get_new_line_idx(buf);
-	//printf("idx = %d\n", idx);
+	//printf("*line = :%s:, idx = %d\n", *line, idx);
 	if (idx < 0)
 		ft_resize_and_copy(line, buf, 0, BUFFER_SIZE);
 	else
@@ -55,7 +55,7 @@ int	get_next_line(int fd, char **line)
 	ssize_t		rd;
 	int			idx;
 
-	if (rd < 0 || !line || BUFFER_SIZE <= 0)
+	if (fd < 0 || !line || BUFFER_SIZE <= 0)
 		return (-1);
 	*line = 0;
 	if (buf_ref)
@@ -76,7 +76,7 @@ int	get_next_line(int fd, char **line)
 			ft_resize_and_copy(line, buf_ref, 0, ft_get_len(buf_ref));
 		buf_ref = 0;
 	}
-	ft_memset(&buf, BUFFER_SIZE);
+	ft_memset(&buf, BUFFER_SIZE + 1);
 	while ((rd = read(fd, buf, BUFFER_SIZE)) > 0)
 	{
 		//printf("loop buf = :%s:\n", buf);
