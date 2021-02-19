@@ -6,7 +6,7 @@
 /*   By: hyi <hyi@student.42seoul.kr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/03 00:28:24 by hyi               #+#    #+#             */
-/*   Updated: 2021/01/03 17:43:58 by hyi              ###   ########.fr       */
+/*   Updated: 2021/01/05 21:42:06 by hyi              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	ft_while_loop(char **line, char *buf, char **buf_ref)
 {
 	int		idx;
 	int		st;
-	char	*del;
 
 	idx = ft_get_new_line_idx(buf);
 	if (idx < 0)
@@ -36,11 +35,8 @@ int	ft_while_loop(char **line, char *buf, char **buf_ref)
 	else
 	{
 		ft_resize_and_copy(line, buf, 0, idx);
-		del = *buf_ref;
 		*buf_ref = (idx + 1 < ft_get_len(buf) && *(buf + idx + 1))
 			? ft_strdup(&buf[idx + 1]) : 0;
-		if (del)
-			free(del);
 		return (1);
 	}
 	st = 0;
@@ -93,7 +89,7 @@ int	get_next_line(int fd, char **line)
 	free(buf);
 	if (!*line)
 		ft_memset(line, 1);
-	if (!rd)
-		free(buf_ref);
-	return (rd > 0 ? 1 : rd);
+	if (rd > 0)
+		return (1);
+	return (rd < 0 ? -1 : 0);
 }
